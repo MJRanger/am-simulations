@@ -111,13 +111,13 @@ wizard = function(lc = 2, sta = 0, int = 2, criamon = 0, wealth = 0, spec = 0, r
 	twilight.count = 0
 	skill = cumsum(seq(1:15)) * 5
 	art = cumsum(seq(1:35))
+	crisis = 0
 	while(dead == 0){
 		if(age >= 35){
-			crisis = 0
 			app = 0
 			age.frac = ceiling(age/10)
 			# Check for and if necessary perform a longevity ritual
-			if(long.ritual == 0 || isTRUE(all.equal(age/10, as.integer(age/10))) || ritual.crisis == 1){
+			if(long.ritual == 0 || isTRUE(all.equal(age/10, as.integer(age/10))) || crisis == 1){
 				if(spec == 1){
 					cc.xp = 2 * ypg + 55
 				} else{
@@ -136,7 +136,7 @@ wizard = function(lc = 2, sta = 0, int = 2, criamon = 0, wealth = 0, spec = 0, r
 				} else{
 					long.ritual = max(ceiling(lab.total/5), 16)
 				}
-				ritual.crisis = 0
+				crisis = 0
 				warping.xp = warping.xp + 1
 			}
 			# Aging roll
@@ -166,28 +166,7 @@ wizard = function(lc = 2, sta = 0, int = 2, criamon = 0, wealth = 0, spec = 0, r
 				dec.score = dec.score + 1
 				dec.xp = 0
 			}
-			if(dec.score > 4){dead = 4}
-			# Resolve crises
-			if(crisis == 1){
-				ritual.crisis = 1
-				crisis.total = d10() + age.frac + dec.score
-				if(crisis.total %in% 15:18){
-					sta.roll = d10() + sta
-					if(sta.roll >= (crisis.total - 14)*3 || crco + aura + sta + 13.5 >= 5 + 5 * (crisis.total - 14)){
-						crisis = 0
-					} else {
-						dead = 1
-					}
-				} else if(crisis.total > 18){
-					if(crco + aura + sta + 15 > 30){
-						crisis = 0
-					} else {
-						dead = 1
-					}
-				} else{
-					crisis = 0
-				}
-			}
+			if(dec.score > 4){dead = 1}
 		}
 		if(dead != 0){
 			break
@@ -259,12 +238,13 @@ wizard = function(lc = 2, sta = 0, int = 2, criamon = 0, wealth = 0, spec = 0, r
 							dead = 2
 						}
 					}
+				warping.xp = warping.xp + d10()
 				}
 			}
 			botch.check = botch.check + 1
-		}
-		if(dead != 0){
-			break
+			if(dead != 0){
+				break
+			}
 		}
 		# Check for violent death
 		if(risk == 1){
