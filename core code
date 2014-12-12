@@ -135,8 +135,7 @@ wizard = function(lc = 2, sta = 0, int = 2, criamon = 0, wealth = 0, spec = 0, r
 					long.ritual = max(ceiling(lab.total/5), 12)
 				} else{
 					long.ritual = max(ceiling(lab.total/5), 16)
-				} 
-				
+				}
 				ritual.crisis = 0
 				warping.xp = warping.xp + 1
 			}
