@@ -7,7 +7,7 @@ d10 = function(){
 	x = sample(seq(1,10),1)
 	return(x)
 }
-
+ 
 sd = function(s = 0, b = 1, bd = 1){
 	k = 0
 	x = sample(seq(0,9),1)
